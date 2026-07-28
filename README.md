@@ -1,7 +1,7 @@
 <div align="center">
 
 # Persian Adaptive ChatBot
-# 🤖🇮🇷📚
+# 🤖📚🤖
 
 ### An Intelligent Browser-Based Persian ChatBot with Adaptive Learning and Persistent Memory
 
