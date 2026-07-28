@@ -20,6 +20,7 @@ A modern Persian chatbot built entirely with HTML, CSS, and JavaScript. It provi
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![LocalStorage](https://img.shields.io/badge/LocalStorage-Enabled-success?style=for-the-badge)
 ![Responsive](https://img.shields.io/badge/Responsive-Yes-success?style=for-the-badge)
+![Persian](https://img.shields.io/badge/Language-Persian-success?style=for-the-badge)
 ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-blue?style=for-the-badge&logo=github)
 ![Open Source](https://img.shields.io/badge/Open--Source-Project-black?style=for-the-badge&logo=github)
 
