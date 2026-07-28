@@ -27,7 +27,7 @@ A modern Persian chatbot built entirely with HTML, CSS, and JavaScript. It provi
 
 <br>
 
-[🌐 Live Demo](https://sadra-hatami.github.io/Persian-Learning-ChatBot/) •
+[🌐 Live Demo](https://sadra-hatami.github.io/Persian-Adaptive-ChatBot/) •
 [📧 Contact](mailto:sadra.hatami.1732@gmail.com)
 
 </div>
@@ -84,7 +84,7 @@ Its clean interface, adaptive learning system, and persistent local memory make 
 
 # 🌐 Live Demo
 
-https://sadra-hatami.github.io/Persian-Learning-ChatBot/
+https://sadra-hatami.github.io/Persian-Adaptive-ChatBot/
 
 ---
 
