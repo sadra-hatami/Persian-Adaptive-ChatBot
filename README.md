@@ -90,11 +90,12 @@ https://sadra-hatami.github.io/Persian-Adaptive-ChatBot/
 
 # 📬 Contact
 
-### Sadra Hatami
+Developer:
+### **Sadra Hatami**
 
-📧 https://mailto:sadra.hatami.1732@gmail.com
+📧 [Email](mailto:sadra.hatami.1732@gmail.com)
 
-🌐 https://github.com/sadra-hatami
+🌐 [GitHub](https://github.com/sadra-hatami)
 
 ---
 
