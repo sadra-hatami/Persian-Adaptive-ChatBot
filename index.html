@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>چت‌بات هوشمند فارسی</title>
+    <link href="style.css" rel="stylesheet">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    color: #333;
+    line-height: 1.6;
+    padding-bottom: 120px;
+    overflow-x: hidden;
+}
+
+html {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+.learning-info {
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 900px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    animation: fadeInGlow 1s ease-out;
+    background: rgb(0 0 0 / 0%);
+    border: 2px solid rgb(255 255 255 / 25%);
+    backdrop-filter: blur(25px);
+    text-shadow: 0 0 10px #000000;
+}
+
+.learning-info h3 {
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.learning-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.stat-box {
+    padding: 10px;
+    text-align: center;
+    flex: 1;
+    min-width: 120px;
+    transition: transform .2s;
+    background: rgb(255 255 255 / 20%);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+    border-radius: 0 12px 12px 12px;
+}
+
+.stat-box:hover {
+    transform: translateY(-3px);
+}
+
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.stat-label {
+    font-size: .85rem;
+    color: #ffffff;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn {
+    background: #667eea;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: .9rem;
+    transition: all .3s;
+    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+    border: 2px solid rgb(255 255 255 / 80%);
+}
+
+.btn:hover {
+    background: #5a67d8;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: #b30000;
+}
+
+.btn-danger:hover {
+    background: #c53030;
+}
+
+.btn-success {
+    background: #00b94d;
+}
+
+.btn-success:hover {
+    background: #38a169;
+}
+
+.style-select {
+    padding: 10px;
+    border-radius: 30px;
+    border: 2px solid #e2e8f0;
+    font-size: .9rem;
+    outline: none;
+}
+
+.chat-container {
+    max-width: 900px;
+    margin: 0 auto 20px;
+    padding: 0 15px;
+}
+
+.message {
+    display: flex;
+    margin: 15px 0;
+    animation: msgAnim .3s ease;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.bot {
+    justify-content: flex-start;
+}
+
+.message .bubble {
+    max-width: 70%;
+    padding: 12px 20px;
+    border-radius: 20px;
+    word-break: break-word;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    animation: fadeInGlow 1s ease-out;
+    background: rgb(0 0 0 / 0%);
+    border: 2px solid rgb(255 255 255 / 25%);
+    backdrop-filter: blur(25px);
+    text-shadow: 0 0 10px #000000;
+}
+
+.message.user .bubble {
+    color: #fff;
+    border-bottom-right-radius: 5px;
+}
+
+.message.bot .bubble {
+    color: white;
+    border-bottom-left-radius: 5px;
+}
+
+.message.bot .bubble.thinking {
+    background: #e2e8f0;
+    font-style: italic;
+    color: #718096;
+}
+
+.message .time {
+    font-size: .75rem;
+    opacity: 0.7;
+    margin-top: 5px;
+}
+
+.message.user .time {
+    text-align: left;
+}
+
+.input-container {
+    position: fixed;
+    bottom: 20px;
+    left: 0px;
+    right: 0px;
+    padding: 15px 25px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(25px);
+    animation: fadeInGlow 1s ease-out;
+    border-radius: 1.8rem;
+    width: 90%;
+    max-width: 900px;
+    background: rgb(255 255 255 / 0%);
+    border: 2px solid rgb(255 255 255 / 25%);
+    justify-content: center;
+    margin: auto;
+}
+
+.learning-info::before,
+.chat-container .message .bubble::before,
+.input-container::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: calc(1.8rem + 5px);
+    background: linear-gradient(135deg, hwb(158deg 0% 0% / 50%), hwb(0deg 0% 0% / 50%));
+    z-index: -1;
+    filter: blur(10px);
+}
+
+.learning-info::before {
+    background: linear-gradient(135deg, hwb(0deg 0% 75% / 50%), hwb(269deg 0% 75% / 50%));
+}
+
+.chat-container .message.bot .bubble::before {
+    background: linear-gradient(135deg, hwb(0deg 0% 100% / 75%), hwb(0deg 0% 100% / 75%));
+}
+
+.chat-container .message.user .bubble::before {
+    background: linear-gradient(135deg, hwb(0deg 0% 50% / 75%), hwb(44deg 0% 50% / 75%));
+}
+
+@keyframes fadeInGlow {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.input-container input {
+    flex: 1;
+    padding: 14px 20px;
+    background: rgb(255 255 255 / 50%);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+    min-width: 60%;
+    max-width: 600px;
+    border-radius: 0 50px 50px 50px;
+    font-size: 1rem;
+    outline: none;
+    transition: border .3s;
+    color: white;
+}
+
+.input-container input:focus {
+    border-color: #ffffff;
+}
+
+.input-container button {
+    background: rgb(255 255 255 / 20%);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    width: 55px;
+    height: 55px;
+    border-radius: 50% 0% 50% 50%;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: all .3s;
+}
+
+.input-container button:hover {
+    transform: scale(1.05);
+}
+
+.typing-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: #667eea;
+    margin-left: 3px;
+    animation: blink .6s infinite;
+}
+
+@keyframes msgAnim {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <div class="learning-info">
+        <h3>📊 وضعیت یادگیری</h3>
+        <div class="learning-stats">
+            <div class="stat-box">
+                <div class="stat-value" id="totalConv">0</div>
+                <div class="stat-label">مکالمات</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="patterns">0</div>
+                <div class="stat-label">الگوها</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="vocab">0</div>
+                <div class="stat-label">واژگان</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="accuracy">0%</div>
+                <div class="stat-label">دقت</div>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="btn btn-success" id="toggleLearnBtn">✅ یادگیری فعال</button>
+            <button class="btn btn-danger" id="clearLearnBtn">🗑️ پاک کردن یادگیری</button>
+            <button class="btn btn-danger" id="clearMessagesBtn">🧹 پاک کردن پیام‌ها</button>
+            <select id="styleSelect" class="style-select">
+                <option value="normal">معمولی</option>
+                <option value="formal">رسمی</option>
+                <option value="funny">خنده‌دار</option>
+            </select>
+        </div>
+    </div>
+    <div class="chat-container" id="chatContainer"></div>
+    <div class="input-container">
+        <input type="text" id="userInput" placeholder="پیام خود را بنویسید..." autocomplete="off">
+        <button id="sendBtn">➤</button>
+    </div>
+    <script>
+        const $ = id => document.getElementById(id);
+const LS = {
+    get(k) {
+        try {
+            return JSON.parse(localStorage.getItem(k))
+        } catch (e) {
+            return null
+        }
+    },
+    set(k, v) {
+        localStorage.setItem(k, JSON.stringify(v))
+    }
+};
+class ChatBot {
+    constructor() {
+        this.convs = LS.get('chatbot_convs') || [];
+        this.data = LS.get('chatbot_data') || {
+            patterns: {},
+            words: [],
+            convPatterns: []
+        };
+        this.enabled = LS.get('chatbot_enabled') !== false;
+        this.style = LS.get('chatbot_style') || 'normal';
+        this.defaults = this.getDefaults();
+        this.updateStats();
+        this.loadChats();
+    }
+    getDefaults() {
+        return [{
+            q: 'سلام',
+            a: 'سلام! چطور می‌تونم کمکت کنم؟'
+        }, {
+            q: 'چطور یاد می‌گیری',
+            a: 'از هر مکالمه یاد می‌گیرم. کلمات و الگوهای شما را ذخیره می‌کنم تا پاسخ‌های بهتری بدهم.'
+        }, {
+            q: 'ساعت چنده',
+            a: () => `ساعت ${new Date().toLocaleTimeString('fa-IR')} است.`
+        }, {
+            q: 'تاریخ امروز چیه',
+            a: () => `امروز ${new Date().toLocaleDateString('fa-IR')} است.`
+        }]
+    }
+    preprocess(t) {
+        return t.trim().toLowerCase().replace(/[،\.!?;،]/g, '').replace(/\s+/g, ' ')
+    }
+    extractKeywords(t) {
+        const s = new Set(['و', 'در', 'به', 'از', 'که', 'این', 'را', 'با', 'برای', 'آن', 'یک', 'با', 'هم', 'اما', 'اگر', 'یا']);
+        return this.preprocess(t).split(' ').filter(w => w.length > 2 && !s.has(w))
+    }
+    similarity(a, b) {
+        const wa = new Set(a.split(' ')),
+            wb = new Set(b.split(' '));
+        const inter = new Set([...wa].filter(x => wb.has(x)));
+        const union = new Set([...wa, ...wb]);
+        return union.size ? inter.size / union.size : 0
+    }
+    findPattern(input) {
+        if (!this.enabled) return null;
+        const inp = this.preprocess(input);
+        let best = null,
+            bestScore = 0;
+        for (const [pat, data] of Object.entries(this.data.patterns)) {
+            const sim = this.similarity(inp, pat);
+            const kwInp = this.extractKeywords(inp),
+                kwPat = this.extractKeywords(pat);
+            const kwScore = kwInp.length ? kwInp.filter(k => kwPat.includes(k)).length / kwInp.length : 0;
+            const score = sim * 0.6 + kwScore * 0.4;
+            if (score > bestScore && score > 0.4) {
+                bestScore = score;
+                best = data.responses[Math.floor(Math.random() * data.responses.length)]
+            }
+        }
+        return best
+    }
+    learn(input, resp) {
+        if (!this.enabled) return;
+        const inp = this.preprocess(input);
+        const keywords = this.extractKeywords(input);
+        keywords.forEach(w => {
+            if (!this.data.words.includes(w)) this.data.words.push(w)
+        });
+        if (!this.data.patterns[inp]) this.data.patterns[inp] = {
+            responses: [resp],
+            freq: 1,
+            lastUsed: Date.now()
+        };
+        else {
+            if (!this.data.patterns[inp].responses.includes(resp)) this.data.patterns[inp].responses.push(resp);
+            this.data.patterns[inp].freq++;
+            this.data.patterns[inp].lastUsed = Date.now()
+        }
+        this.data.convPatterns.push({
+            input: inp,
+            response: resp,
+            time: Date.now()
+        });
+        if (this.data.convPatterns.length > 100) this.data.convPatterns.shift();
+        this.save()
+    }
+    generateResponse(input) {
+        const inp = this.preprocess(input);
+        const learned = this.findPattern(input);
+        if (learned) return this.applyStyle(learned);
+        for (const d of this.defaults) {
+            if (this.similarity(inp, this.preprocess(d.q)) > 0.6) return this.applyStyle(typeof d.a === 'function' ? d.a() : d.a)
+        }
+        const ctx = this.contextResponse(inp);
+        if (ctx) return this.applyStyle(ctx);
+        const fallbacks = ['جالب است! بیشتر بگویید.', 'نظر شما چیست؟', 'هنوز یاد نگرفته‌ام اما سعی می‌کنم بهتر شوم.', 'می‌توانید بیشتر توضیح دهید؟', 'این موضوع جالبی است.'];
+        return this.applyStyle(fallbacks[Math.floor(Math.random() * fallbacks.length)])
+    }
+    contextResponse(input) {
+        const recent = this.data.convPatterns.slice(-5);
+        if (!recent.length) return null;
+        const inpKW = this.extractKeywords(input);
+        for (const c of recent) {
+            const cKW = this.extractKeywords(c.input);
+            const common = inpKW.filter(k => cKW.includes(k));
+            if (!common.length) continue;
+            const related = Object.entries(this.data.patterns).filter(([pat]) => this.extractKeywords(pat).some(k => common.includes(k)));
+            if (related.length) {
+                const pick = related[Math.floor(Math.random() * related.length)];
+                return pick[1].responses[Math.floor(Math.random() * pick[1].responses.length)]
+            }
+        }
+        return null
+    }
+    applyStyle(text) {
+        switch (this.style) {
+            case 'formal':
+                return text.replace(/م$/, 'م').replace(/ی$/, 'ی') + ' (با احترام)';
+            case 'funny':
+                return '🤣' + text;
+            default:
+                return text
+        }
+    }
+
+    addMessage(sender, text, time) {
+        const msg = {
+            sender,
+            text,
+            time: time || new Date().toLocaleTimeString('fa-IR')
+        };
+        this.convs.push(msg);
+        LS.set('chatbot_convs', this.convs);
+        this.updateStats();
+        return msg
+    }
+    loadChats() {
+        const c = $('chatContainer');
+        c.innerHTML = '';
+        this.convs.forEach(m => {
+            const div = document.createElement('div');
+            div.className = `message ${m.sender}`;
+            div.innerHTML = `<div class="bubble">${m.text}<div class="time">${m.time}</div></div>`;
+            c.appendChild(div)
+        });
+        c.scrollTop = c.scrollHeight
+    }
+    save() {
+        LS.set('chatbot_data', {
+            patterns: this.data.patterns,
+            words: this.data.words,
+            convPatterns: this.data.convPatterns
+        });
+        this.updateStats()
+    }
+    updateStats() {
+        $('totalConv').textContent = this.convs.length;
+        $('patterns').textContent = Object.keys(this.data.patterns).length;
+        $('vocab').textContent = this.data.words.length;
+        $('accuracy').textContent = this.calcAccuracy() + '%';
+        $('toggleLearnBtn').innerHTML = this.enabled ? '✅ یادگیری فعال' : '❌ یادگیری غیرفعال';
+        LS.set('chatbot_enabled', this.enabled)
+    }
+    calcAccuracy() {
+        if (this.data.convPatterns.length < 5) return 0;
+        const recent = this.data.convPatterns.slice(-20);
+        let ok = 0;
+        recent.forEach(p => {
+            const resp = this.findPattern(p.input);
+            if (resp && this.similarity(resp, p.response) > 0.5) ok++
+        });
+        return Math.round(ok / recent.length * 100)
+    }
+    clearLearning() {
+        this.data = {
+            patterns: {},
+            words: [],
+            convPatterns: []
+        };
+        LS.set('chatbot_data', this.data);
+        this.updateStats();
+        alert('داده‌های یادگیری پاک شد.')
+    }
+    clearMessages() {
+        this.convs = [];
+        LS.set('chatbot_convs', this.convs);
+        this.loadChats();
+        this.updateStats()
+    }
+    toggleLearn() {
+        this.enabled = !this.enabled;
+        LS.set('chatbot_enabled', this.enabled);
+        this.updateStats();
+        alert(`یادگیری ${this.enabled ? 'فعال' : 'غیرفعال'} شد.`)
+    }
+}
+const bot = new ChatBot();
+$('sendBtn').onclick = () => send();
+$('userInput').onkeydown = e => {
+    if (e.key === 'Enter') send()
+};
+$('clearLearnBtn').onclick = () => {
+    if (confirm('پاک شود؟')) bot.clearLearning()
+};
+$('clearMessagesBtn').onclick = () => {
+    if (confirm('پیام‌ها پاک شوند؟')) bot.clearMessages()
+};
+$('toggleLearnBtn').onclick = () => bot.toggleLearn();
+$('styleSelect').onchange = function () {
+    bot.style = this.value;
+    LS.set('chatbot_style', bot.style)
+};
+async function send() {
+    const inp = $('userInput'),
+        text = inp.value.trim();
+    if (!text) return;
+    inp.value = '';
+    bot.addMessage('user', text);
+    bot.loadChats();
+    showThinking();
+    const resp = bot.generateResponse(text);
+    bot.learn(text, resp);
+    await typeResponse(resp)
+}
+
+function showThinking() {
+    const c = $('chatContainer');
+    const d = document.createElement('div');
+    d.className = 'message bot';
+    d.id = 'thinkingMsg';
+    d.innerHTML = '<div class="bubble thinking">🧠 فکر کردن <span class="typing-cursor"></span></div>';
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight
+}
+async function typeResponse(fullText) {
+    const thinking = $('thinkingMsg');
+    if (thinking) thinking.remove();
+    const c = $('chatContainer');
+    const d = document.createElement('div');
+    d.className = 'message bot';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    d.appendChild(bubble);
+    c.appendChild(d);
+    const words = fullText.split(' ');
+    let idx = 0,
+        shown = '';
+    const cursorSpan = document.createElement('span');
+    cursorSpan.className = 'typing-cursor';
+    bubble.appendChild(cursorSpan);
+    await new Promise(resolve => {
+        const interval = setInterval(() => {
+            if (idx < words.length) {
+                shown += (idx ? ' ' : '') + words[idx];
+                idx++;
+                bubble.innerHTML = shown;
+                bubble.appendChild(cursorSpan);
+                c.scrollTop = c.scrollHeight
+            } else {
+                clearInterval(interval);
+                cursorSpan.remove();
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'time';
+                timeDiv.textContent = new Date().toLocaleTimeString('fa-IR');
+                bubble.appendChild(timeDiv);
+                bot.addMessage('bot', fullText, timeDiv.textContent);
+                resolve()
+            }
+        }, 120)
+    })
+}
+
+if (!bot.convs.length) {
+    setTimeout(async () => {
+        const hour = new Date().getHours();
+        const battery = await (navigator.getBattery ? navigator.getBattery() : Promise.resolve({ level: 1 }));
+        const charge = Math.round(battery.level * 100);
+
+        const TIME_PERIODS = {
+            MORNING: { range: [5, 11], label: 'صبح', emoji: ['🌅', '☀️', '🍃', '☕', '🌤️'] },
+            NOON: { range: [11, 15], label: 'ظهر', emoji: ['🌞', '💬', '🍽️', '🌻', '🕛'] },
+            AFTERNOON: { range: [15, 19], label: 'عصر', emoji: ['🌇', '🕓', '✨', '🍂', '💭'] },
+            NIGHT: { range: [19, 23], label: 'شب', emoji: ['🌙', '🕯️', '💤', '⭐', '🌌'] },
+            MIDNIGHT: { range: [23, 5], label: 'نیمه_شب', emoji: ['🌠', '🌙', '🕰️', '💫', '🌔'] }
+        };
+
+        const MESSAGES = {
+            GREETINGS: ['سلام خوبی؟', 'سلام حالت چطوره؟', 'عزیزم چطوری؟', 'حالت خوبه گل؟', 'سلام چیکار میکنی؟'],
+            MORNING: ['صبح بخیر! آماده‌ای روزت رو شروع کنیم؟', 'سلام! وقت کارای تازه‌ست.', 'صبح شده! با انگیزه روزمون رو بسازیم.'],
+            NOON: ['ظهر خوش! وقت یه گپ کوتاه.', 'سلام! روزت تا حالا چطور گذشته؟', 'ظهر شده، بیا کمی حرف بزنیم.'],
+            AFTERNOON: ['عصر بخیر! روزت رو چطور گذروندی؟', 'وقت عصره، خسته‌ای یا باانگیزه؟', 'یه گپ عصرونه با من چطوره؟'],
+            NIGHT: ['شب بخیر! من هنوز بیدارم.', 'هوای شب آرومه، بیا صحبت کنیم.', 'شب‌ها زمان حرف‌های عمیقه.'],
+            MIDNIGHT: ['هنوز بیداری؟ منم بیدارم.', 'ساعت خاصی است، آماده گفتگوام.', 'در سکوت شب، گوش میدم.'],
+            LOW_BATTERY: ['شارژت رو چک کن، زیر ۱۵٪ه.', 'انرژی دستگاهت کمه، زمان شارژشه.', 'شارژت رو فراموش نکن!'],
+            CRITICAL_BATTERY: ['هشدار! شارژت خیلی کمه.', 'در آستانه خاموشیه، وصلش کن!', 'خاموشی نزدیکه!']
+        };
+
+        const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+        // تعیین دوره زمانی
+        const currentKey = Object.keys(TIME_PERIODS).find(key => {
+            const [start, end] = TIME_PERIODS[key].range;
+            return start < end ? (hour >= start && hour < end) : (hour >= start || hour < end);
+        });
+
+        const period = TIME_PERIODS[currentKey];
+        let reply = `${pick(MESSAGES.GREETINGS)} ${pick(MESSAGES[currentKey.toUpperCase()] || [])} ${pick(period.emoji)}`;
+
+        // افزودن هشدار باتری
+        if (charge < 5) reply += ` ‼️ ${pick(MESSAGES.CRITICAL_BATTERY)} 🪫`;
+        else if (charge < 15) reply += ` ⚠️ ${pick(MESSAGES.LOW_BATTERY)} 🔋`;
+
+        bot.addMessage('bot', reply);
+        bot.loadChats();
+    }, 300);
+}
+    </script>
+</body>
+
+</html>
